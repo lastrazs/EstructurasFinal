@@ -2,6 +2,8 @@ using EstructurasFinal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Security;
+using EstructurasFinal.Services.Cita;
+using EstructurasFinal.Services.Implementacion;
 namespace EstructurasFinal
 {
     public class Program
@@ -23,6 +25,11 @@ namespace EstructurasFinal
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("cadenaSQL"));
             });
+
+            builder.Services.AddScoped<ICitaService,CitaServices>();
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
+            builder.Services.AddScoped<IPacienteService, PacienteService>();
+
 
             var app = builder.Build();
 
