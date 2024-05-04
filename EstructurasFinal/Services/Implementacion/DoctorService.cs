@@ -4,36 +4,37 @@ using EstructurasFinal.Services.Cita;
 
 namespace EstructurasFinal.Services.Implementacion
 {
-    public class PacienteService : IPacienteService
+    public class DoctorService : IDoctorService
     {
         private EstructurasFinalContext _dbContext;
 
-        public PacienteService(EstructurasFinalContext dbContext)
+        public DoctorService(EstructurasFinalContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<List<Paciente>> GetList()
+        public async Task<List<Doctor>> GetList()
         {
             try
             {
-                List<Paciente> lista = new List<Paciente>();
-                lista = await _dbContext.Pacientes.ToListAsync();
+                List<Doctor> lista = new List<Doctor>();
+                lista = await _dbContext.Doctors.ToListAsync();
                 return lista;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            
         }
-        public async Task<Paciente> Get(int id)
+        public async Task<Doctor> Get(int Doctorid)
         {
             try
             {
-                Paciente? find = new Paciente();
+                Doctor? find = new Doctor();
 
-                find = await _dbContext.Pacientes
-                    .Where(e => e.Id == id).FirstOrDefaultAsync(); 
+                find = await _dbContext.Doctors.Include(doctor => doctor.Status)
+                    .Where(e => e.DoctorId == Doctorid).FirstOrDefaultAsync();
                 return find;
             }
             catch (Exception ex)
@@ -42,38 +43,24 @@ namespace EstructurasFinal.Services.Implementacion
             }
         }
 
-
-        public async Task<Paciente> Add(Paciente modelo)
+        public async Task<Doctor> Add(Doctor modelo)
         {
             try
             {
-                _dbContext.Pacientes .Add(modelo);
+                _dbContext.Doctors.Add(modelo);
                 await _dbContext.SaveChangesAsync();
-                return modelo; 
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public async Task<bool> Update(Paciente modelo)
-        {
-            try
-            {
-                _dbContext.Pacientes.Update(modelo);
-                await _dbContext.SaveChangesAsync();
-                return true;
+                return modelo;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public async Task<bool> Delete(Paciente modelo)
+        public async Task<bool> Update(Doctor modelo)
         {
             try
             {
-                _dbContext.Pacientes.Remove(modelo);
+                _dbContext.Doctors.Update(modelo);
                 await _dbContext.SaveChangesAsync();
                 return true;
             }
@@ -83,6 +70,21 @@ namespace EstructurasFinal.Services.Implementacion
             }
         }
 
+        public async Task<bool> Delete(Doctor modelo)
+        {
+            try
+            {
+                _dbContext.Doctors.Remove(modelo);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+       
     }
-}
 
+    
+}
