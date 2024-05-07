@@ -26,6 +26,7 @@ namespace EstructurasFinal.Utilities
             CreateMap<PacienteDTO, Paciente>();
             #endregion
             #region Doctor
+            CreateMap<DoctorDTO, Doctor>();
             CreateMap<Doctor, DoctorDTO>();
             #endregion
 

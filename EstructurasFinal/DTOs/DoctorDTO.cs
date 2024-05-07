@@ -9,5 +9,8 @@
         public string? Specialty { get; set; }
 
         public TimeOnly? AvailableHour { get; set; }
+
+        public string? Status { get; set; }
     }
+
 }

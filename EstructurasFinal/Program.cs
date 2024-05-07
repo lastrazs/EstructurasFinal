@@ -90,17 +90,17 @@ namespace EstructurasFinal
                         var pacienteList = await _pacienteservices.GetList();
                         var pacienteListDTO = _mapper.Map<List<PacienteDTO>>(pacienteList);
 
-                        if (pacienteListDTO.Count > 0) 
+                        if (pacienteListDTO.Count > 0)
                         {
                             return Results.Ok(pacienteListDTO);
                         } else
                             return Results.NotFound();
                     });
 
-            app.MapPost("/paciente/save", async(
+            app.MapPost("/paciente/save", async (
                 PacienteDTO model,
                 IPacienteService _pacienteservices,
-                IMapper _mapper 
+                IMapper _mapper
                 ) =>
                     {
                         var _paciente = _mapper.Map<Paciente>(model);
@@ -109,10 +109,10 @@ namespace EstructurasFinal
                         if (_pacienteCreate.Id != 0)
                         {
                             return Results.Ok(_mapper.Map<PacienteDTO>(_pacienteCreate));
-                        }else
+                        } else
                             return Results.StatusCode(StatusCodes.Status500InternalServerError);
                     });
-            app.MapPut("/paciente/update/{idPaciente}", async(
+            app.MapPut("/paciente/update/{idPaciente}", async (
                 int idPaciente,
                 PacienteDTO model,
                 IPacienteService _pacienteservices,
@@ -120,7 +120,7 @@ namespace EstructurasFinal
                 ) =>
             {
                 var _find = await _pacienteservices.Get(idPaciente);
-                if (_find is null) return Results.NotFound();    
+                if (_find is null) return Results.NotFound();
 
                 var _paciente = _mapper.Map<Paciente>(model);
 
@@ -134,7 +134,7 @@ namespace EstructurasFinal
 
                 var res = await _pacienteservices.Update(_find);
 
-                if (res) 
+                if (res)
                     return Results.Ok(_mapper.Map<PacienteDTO>(_find));
                 else
                     return Results.StatusCode(StatusCodes.Status500InternalServerError);
@@ -205,6 +205,7 @@ namespace EstructurasFinal
                 _find.Name = model.Name;
                 _find.Specialty = model.Specialty;
                 _find.AvailableHour = model.AvailableHour;
+                _find.Status = model.Status;
 
                 var res = await _DoctorServices.Update(_find);
 
@@ -214,9 +215,9 @@ namespace EstructurasFinal
                     return Results.StatusCode(StatusCodes.Status500InternalServerError);
             });
 
-            app.MapDelete("/doctor/delete/{doctorId}", async (
+            app.MapDelete("/doctor/delete/{DoctorId}", async (
                 int doctorId,
-                IPacienteService _DoctorServices
+                IDoctorService _DoctorServices
                 ) =>
             {
                 var _find = await _DoctorServices.Get(doctorId);
@@ -230,6 +231,7 @@ namespace EstructurasFinal
                 else
                     return Results.StatusCode(StatusCodes.Status500InternalServerError);
             });
+               
             #endregion
             app.UseAuthorization();
 
