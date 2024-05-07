@@ -33,7 +33,7 @@ namespace EstructurasFinal.Services.Implementacion
             {
                 Doctor? find = new Doctor();
 
-                find = await _dbContext.Doctors.Include(doctor => doctor.Status)
+                find = await _dbContext.Doctors
                     .Where(e => e.DoctorId == Doctorid).FirstOrDefaultAsync();
                 return find;
             }
